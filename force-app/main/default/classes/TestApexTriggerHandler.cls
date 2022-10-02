@@ -3,7 +3,7 @@ public class TestApexTriggerHandler {
     @testSetup static void InitializeTestData() {
         List<Account> testAccts = new List<Account>();
         for(Integer i=0;i<3;i++) {
-            testAccts.add(new Account(Name = 'TestAcct'+i, type='Prospective',phone='123-123-1234'));
+            testAccts.add(new Account(Name = 'TestAcct'+i, type='Prospect',phone='123-123-1234'));
         }
         insert testAccts;
    }
@@ -11,7 +11,7 @@ public class TestApexTriggerHandler {
    @isTest private static void testAfterInsertMethod(){
        List<Account> insertListAccts = new List<Account>();
        for(Integer i=0;i<3;i++) {
-           insertListAccts.add(new Account(Name = 'TestAcctIns'+i, type='Prospective'));
+           insertListAccts.add(new Account(Name = 'TestAcctIns'+i, type='Prospect'));
        }
        Test.startTest();
        insert insertListAccts;
@@ -57,29 +57,5 @@ public class TestApexTriggerHandler {
         System.assertEquals('123-123-1234',acPh[0].phone);
     }
     
-    @isTest private static void testAfterInsertMethodException(){
-       List<Account> insertListAccts = new List<Account>();
-       for(Integer i=0;i<3;i++) {
-           insertListAccts.add(new Account(Name = 'TestAcctIns'+i, type='Prospective'));
-       }
-       Test.startTest();
 
-       insert insertListAccts;
-       List<Account>    acct = [SELECT id,Phone  FROM Account WHERE Name='TestAcct0' LIMIT 1]; 
-       List<Opportunity> oppList = new List<Opportunity>();
-       try{
-       for(Account a:acct){
-            Opportunity opp = new Opportunity(name='Default Residential', accountid=a.id, stageName='Prospective');
-           oppList.add(opp); 
-            opp =new Opportunity(name='Default Commercial', accountid=a.id,closedate=Date.today(), stageName='Prospective');
-            oppList.add(opp);
-        }
-        insert oppList;
-        }catch (Exception e){}
-
-       Test.stopTest();
-       List<Account> acc =[select id from Account where name='testAcctIns0'];
-       System.assertEquals(1,acc.size());
-        
-   }
 }

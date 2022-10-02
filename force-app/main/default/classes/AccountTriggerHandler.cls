@@ -61,7 +61,7 @@ String methodName='afterUpdateMethod';
 
     for(Account acc:newAccounts){
         Boolean sendEmailAlert=false;
-        if ('Prospective'.contains(acc.Type)){
+        if ('Prospect'.contains(acc.Type)){
             if(mpRes.get(acc.id)==null){
                 //No Residentials Opp found 
                 //Create new Opp to replace old one
